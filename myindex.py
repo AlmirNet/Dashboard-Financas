@@ -11,8 +11,16 @@ from components import sidebar, dashboards, extratos
 # DataFremes and Dcc.store
 
 df_receitas = pd.read_csv('df_receitas.csv', index_col=0, parse_dates=True)
-df_receita_aux = df_receitas.to_dict()
+df_receitas_aux = df_receitas.to_dict()
 
+df_despesas = pd.read_csv("df_despesas.csv", index_col=0, parse_dates=True)
+df_despesas_aux = df_despesas.to_dict()
+
+list_receita = pd.read_csv('df_cat_receita.csv', index_col=0)
+list_receitas_aux = list_receita.to_dict()
+
+list_despesas = pd.read_csv('df_cat_despesa.csv', index_col=0)
+list_despesas_aux = list_despesas.to_dict()
 
 
 
@@ -23,15 +31,27 @@ content = html.Div(id="page-content")
 
 
 app.layout = dbc.Container(children=[
+    dcc.Store(id='store-receita', data=df_receitas_aux),
+    dcc.Store(id="store-despesas", data=df_receitas_aux),
+    dcc.Store(id='stored-cat-receitas', data=list_receitas_aux),
+    dcc.Store(id='stored-cat-despesas', data=list_despesas_aux),
+              
+    dbc.Row([
+        dbc.Col([
+            dcc.Location(id="url"),
+            sidebar.layout
+        ], md=2),
 
+        dbc.Col([
+            html.Div(id="page-content")
+        ], md=10),
+    ])
+], fluid=True, style={"padding": "0px"}, className="dbc")
 
-
-
-
-], fluid=True,)
-
-
-
+@app.callback(Output("page-content", "children"), [Input("url", "pathname")])
+def render_page_content(pathname):
+    if pathname == "/" or pathname == "/dashboards":
+        return dashboards.layout
 
 if __name__ == '__main__':
     app.run_server(port=8051, debug=True)

@@ -17,7 +17,9 @@ import pandas as pd
 
 # ========= Layout ========= #
 layout = dbc.Col([
-                
+               html.H1("MyBudget", className="text-primary"),
+                html.P("By AlmirNet", className="text-info"),
+                html.Hr(), 
             ])
 
 
