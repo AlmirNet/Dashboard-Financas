@@ -6,6 +6,14 @@ import pandas as pd
 import plotly.express as px
 
 from app import *
+from components import sidebar, dashboards, extratos
+
+# DataFremes and Dcc.store
+
+df_receitas = pd.read_csv('df_receitas.csv', index_col=0, parse_dates=True)
+df_receita_aux = df_receitas.to_dict()
+
+
 
 
 
